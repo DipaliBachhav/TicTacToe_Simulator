@@ -18,5 +18,17 @@ function assignedLetter()
 	echo "Letter Assigned To Computer := " $computer
 }
 
+function checkWhoPlayFirst()
+{
+	random=$(( RANDOM%2 ))
+	if [[ $random -eq 1 ]]
+	then
+		echo "Player Play First"
+	else
+		echo "Computer Play First"
+	fi
+}
+
 resetBoard
 assignedLetter
+checkWhoPlayFirst
