@@ -117,6 +117,30 @@ function userInput(){
 	playerTurn=false
 }
 
+function computerInput(){
+	row=1
+	column=3
+	playerTurn=false
+	echo "computer is playing"
+	checkWinningMove $row $column
+	checkWinningMove $column $row
+	checkWinningMovePlayer $row $column
+        checkWinningMovePlayer $column $row
+	position=$(( (RANDOM%9)+1 ))
+	if [[ $winMove == false ]] && [[ $playerTurn == false ]]
+	then
+		if [[ ${board[$position]} == $tail ]]
+		then
+			board[$position]=$computer
+			printBoard
+		else
+			echo "Invalid input"
+			computerInput
+		fi
+	fi
+	playerTurn=true
+}
+
 resetBoard
 assignedLetter
 checkWhoPlayFirst
