@@ -4,6 +4,7 @@ echo "Welcome To TicTacToe Simulator...."
 position=9
 player='X'
 computer='O'
+tail='-'
 function resetBoard()
 {
 	for (( i=0; i<=$position; i++ ))
@@ -122,10 +123,6 @@ function computerInput(){
 	column=3
 	playerTurn=false
 	echo "computer is playing"
-	checkWinningMove $row $column
-	checkWinningMove $column $row
-	checkWinningMovePlayer $row $column
-        checkWinningMovePlayer $column $row
 	position=$(( (RANDOM%9)+1 ))
 	if [[ $winMove == false ]] && [[ $playerTurn == false ]]
 	then
