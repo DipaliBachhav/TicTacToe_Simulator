@@ -230,6 +230,28 @@ function checkWinningMovePlayer(){
 	fi
 }
 
+function cornerCheck(){
+	if [[ $winMove == false ]] && [[ $playerTurn == false ]]
+	then
+		for ((i=1;i<boardPosition;i=$(($i+2)) ))
+		do
+			if [[ ${board[$i]} == '-' ]]
+			then
+				echo "Corner move"
+				computerP=$i
+				board[$computerP]=$computer
+				printBoard
+				playerTurn=true
+				break
+			fi
+			if [ $i -eq 3 ]
+			then
+				i=$(($i+2))
+			fi
+		done
+	fi
+}
+
 resetBoard
 assignedLetter
 checkWhoPlayFirst
