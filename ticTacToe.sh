@@ -112,6 +112,25 @@ function checkDiagonalCase(){
 	fi
 }
 
+function checkTieCase(){
+	if [ $winner == false ]
+	then
+		nonEmptyCount=1
+		while [ ${board[$nonEmptyCount]} != $tail ]
+		do
+			if [ $nonEmptyCount -eq 9 ]
+			then
+				printBoard
+				echo "Game is Tie"
+				winner=true
+				break
+			else
+				nonEmptyCount=$(($nonEmptyCount+1))
+			fi
+		done
+	fi
+}
+
 function userInput(){
 	row=1
 	column=3
