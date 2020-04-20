@@ -1,13 +1,24 @@
 #!/bin/bash -x
 echo "Welcome To TicTacToe Simulator...."
 
-position=9
+tail='-'
+boardPosition=10
 player='X'
 computer='O'
-tail='-'
+nonEmptyCount=1
+numberOfColumns=3
+numberOfRows=3
+boardPosition=10
+playerTurn=false
+winner=false
+turn=0
+computerP=0
+playerP=0
+winMove=false
+
 function resetBoard()
 {
-	for (( i=0; i<=$position; i++ ))
+	for (( i=0; i<=$boardPosition; i++ ))
 	do
 		board[$i]="-"
 	done
@@ -123,6 +134,14 @@ function computerInput(){
 	column=3
 	playerTurn=false
 	echo "computer is playing"
+	checkWinningMove $row $column
+	checkWinningMove $column $row
+	checkWinningMovePlayer $row $column
+        checkWinningMovePlayer $column $row
+
+	cornerCheck
+	centerCheck
+	sideCheck
 	position=$(( (RANDOM%9)+1 ))
 	if [[ $winMove == false ]] && [[ $playerTurn == false ]]
 	then
@@ -138,7 +157,100 @@ function computerInput(){
 	playerTurn=true
 }
 
+
+function checkWinningMove(){
+	if [[ $winMove == false ]]
+	then
+	counter=1
+	for (( i=1;i<=3;i++))
+	do
+		if [[ ${board[$counter]} == ${board[$counter+$1+$1]} ]] && [[ ${board[$counter+$1]} == $tail ]] && [[ ${board[$counter]} == $computer ]] 
+		then
+			computerP=$(( $counter+$1 ))
+			echo "winning move is ."$computrP
+			board[$computerP]=$computer
+			printBoard
+			winMove=true
+			playerTurn=true
+			break
+		elif [[ ${board[$counter]} == ${board[$counter+$1]} ]] && [[ ${board[$counter+$1+$1]} == $tail ]] && [[ ${board[$counter]} == $computer ]]
+		then
+			computerP=$(( $counter+$1+$1 ))
+			echo "winning move is .."$computrP
+			board[$computerP]=$computer
+			printBoard
+			winMove=true
+			playerTurn=true
+			break
+		elif [[ ${board[$counter+$1]} == ${board[$counter+$1+$1]} ]] && [[ ${board[$counter]} == $tail ]] && [[ ${board[$counter+$1]} == $computer ]]
+		then
+			computerP=$counter
+			echo "winning move is ..."$computrP
+			board[$computerP]=$computer
+			printBoard
+			winMove=true
+			playerTurn=true
+			break
+		fi
+	counter=$(( $counter+$2 ))
+	done
+	fi
+}
+
+function checkWinningMovePlayer(){
+	counterPlayer=1
+	if [[ $playerTurn == false ]]
+	then
+	for (( i=1;i<=3;i++))
+	do
+		if [[ ${board[$counterPlayer]} == ${board[$counterPlayer+$1+$1]} ]] && [[ ${board[$counterPlayer+$1]} == $tail ]] && [[ ${board[$counterPlayer]} == $player ]] 
+		then
+			playerP=$(( $counterPlayer+$1 ))
+			echo "blocking move is "$playerP
+			board[$playerP]=$computer
+			playerTurn=true
+			break
+		elif [[ ${board[$counterPlayer]} == ${board[$counterPlayer+$1]} ]] && [[ ${board[$counterPlayer+$1+$1]} == $tail ]] && [[ ${board[$counterPlayer]} == $player ]]
+		then
+			playerP=$(( $counterPlayer+$1+$1 ))
+			echo "blocking move is "$playerP
+			board[$playerP]=$computer
+			playerTurn=true
+			break
+		elif [[ ${board[$counterPlayer+$1]} == ${board[$counterPlayer+$1+$1]} ]] && [[ ${board[$counterPlayer]} == $tail ]] && [[ ${board[$counterPlayer+$1]} == $player ]]
+		then
+			playerP=$counterPlayer
+			echo "blocking move is "$playerP
+			board[$playerP]=$computer
+			playerTurn=true
+			break
+		fi
+	counterPlayer=$(( $counterPlayer+$2 ))
+	done
+	fi
+}
+
 resetBoard
 assignedLetter
 checkWhoPlayFirst
 
+while [[ $winner == false ]]
+do
+	printBoard
+	if [[  $playerTurn == true ]]
+	then
+		userInput
+		checkHorizontalCase $player
+		checkVerticalCase $player
+		checkDiagonalCase $player
+		checkTieCase $player
+		playerTurn=false
+	else
+		computerInput
+		checkHorizontalCase $computer
+		checkVerticalCase $computer
+		checkDiagonalCase $computer
+		checkTieCase $computer
+		playerTurn=true
+	fi
+done
