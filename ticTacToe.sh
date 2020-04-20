@@ -252,6 +252,18 @@ function cornerCheck(){
 	fi
 }
 
+function centerCheck(){
+	center=5
+	if [[ $winMove == false ]] && [[ ${board[$center]} == $tail ]] && [[ $playerTurn == false ]]
+	then
+		echo "Center move"
+		computerP=$center
+		board[$computerP]=$computer
+		printBoard
+		playerTurn=true
+	fi
+}
+
 resetBoard
 assignedLetter
 checkWhoPlayFirst
