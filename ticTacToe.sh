@@ -264,6 +264,28 @@ function centerCheck(){
 	fi
 }
 
+function sideCheck(){
+	if [[ $winMove == false ]] && [[ $playerTurn == false ]]
+	then
+		for (( i=2; i<boardPosition;i=$(($i+2)) ))
+		do
+			if [ ${board[$i]} == $tail ]
+			then
+				echo "side move"
+				computerP=$i
+				board[$computerP]=$computer
+				printBoard
+				playerTurn=true
+				break
+			fi
+			if [ $i -eq 3 ] || [ $i -eq 6 ]
+			then
+				i=$(($i+1))
+			fi
+		done
+	fi
+}
+
 resetBoard
 assignedLetter
 checkWhoPlayFirst
