@@ -3,8 +3,8 @@ echo "Welcome To TicTacToe Simulator...."
 
 tail='-'
 boardPosition=10
-player='X'
-computer='O'
+player=X
+computer=O
 nonEmptyCount=1
 numberOfColumns=3
 numberOfRows=3
@@ -26,8 +26,14 @@ function resetBoard()
 
 function assignedLetter()
 {
-	echo "Letter Assigned To Player := " $player
-	echo "Letter Assigned To Computer := " $computer
+	random=$((RANDOM%2))
+        if [[ $random -eq 1 ]]
+        then
+                echo "Player Represented By X"
+        else
+                echo "Computer Represented By O"
+        fi
+
 }
 
 function checkWhoPlayFirst()
@@ -308,7 +314,7 @@ function sideCheck(){
 resetBoard
 assignedLetter
 checkWhoPlayFirst
-
+function Game(){
 while [[ $winner == false ]]
 do
 	printBoard
@@ -329,3 +335,6 @@ do
 		playerTurn=true
 	fi
 done
+}
+Game
+printBoard
